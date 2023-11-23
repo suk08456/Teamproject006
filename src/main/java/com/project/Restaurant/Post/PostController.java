@@ -5,7 +5,6 @@ package com.project.Restaurant.Post;
 import com.project.Restaurant.Member.Member;
 import com.project.Restaurant.Member.MemberService;
 import com.project.Restaurant.PostComment.PostCommentForm;
-import com.project.Restaurant.PostComment.PostCommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,20 +30,20 @@ public class PostController {
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page){
         Page<Post> paging = this.postService.getList(page);
         model.addAttribute("paging", paging);
-        return "post_list";
+        return "Post/post_list";
     }
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable Long id, PostCommentForm postCommentForm){
         Post post = this.postService.getPost(id);
         model.addAttribute("post", post);
-        return "post_detail";
+        return "Post/post_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String postCreate(PostForm postForm){
-        return "post_form";
+        return "Post/post_form";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -58,7 +56,7 @@ public class PostController {
         }
         Member member = this.memberService.getMemberByUsername(principal.getName());
         this.postService.create(postForm.getTitle(), postForm.getContent(), member);
-        return "redirect:/post/list";
+        return "Post/redirect:/post/list";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -70,7 +68,7 @@ public class PostController {
         }
         postForm.setTitle(post.getTitle());
         postForm.setContent(post.getContent());
-        return "post_form";
+        return "Post/post_form";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -85,7 +83,7 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.postService.modify(post, postForm.getTitle(), postForm.getContent());
-        return String.format("redirect:/post/detail/%s", id);
+        return String.format("Post/redirect:/post/detail/%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -96,6 +94,6 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
         this.postService.delete(post);
-        return "redirect:/post/list";
+        return "Post/redirect:/post/list";
     }
 }

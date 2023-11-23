@@ -1,5 +1,6 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
+    <link rel="stylesheet" href="/style.css">
     <table class="table">
         <thead class="table-dark">
         <tr class="text-center">
@@ -14,10 +15,9 @@
             <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
             <td class="text-start">
                 <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
-                <span class="text-danger small ms-2"
-                      th:if="${#lists.size(post.postCommentList) > 0}"
-                      th:text="${#lists.size(post.postCommentList)}">
-                    </span>
+                <span class="text-danger small ms-2" th:if="${#lists.size(post.postCommentList) > 0}">
+     [<span class="comment-text" th:text="${#lists.size(post.postCommentList)}"></span>]
+</span>
             </td>
             <td><span th:if="${post.author != null}" th:text="${post.author.memberNickName}"></span></td>
             <td th:text="${#temporals.format(post.localDateTime, 'yyyy-MM-dd HH:mm')}"></td>
@@ -50,11 +50,10 @@
             </li>
 
 
-
             <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                <span>다음</span>
-            </a>
+                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                    <span>다음</span>
+                </a>
             </li>
 
 
@@ -69,7 +68,6 @@
         </ul>
     </div>
     <!-- 페이징처리 끝 -->
-
 
 
     <div class="d-flex justify-content-end">

@@ -40,11 +40,11 @@ public class PostCommentController {
 
 
         if (bindingResult.hasErrors()) {
-            return "post_detail";
+            return "Post/post_detail";
         }
 
         this.postCommentService.create(post, postCommentForm.getContent(), member);
-        return String.format("redirect:/post/detail/%s", id);
+        return String.format("Post/redirect:/post/detail/%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -55,7 +55,7 @@ public class PostCommentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         postCommentForm.setContent(postComment.getContent());
-        return "postcomment_form";
+        return "Post/postcomment_form";
 
     }
 
@@ -64,14 +64,14 @@ public class PostCommentController {
     public String commentModify(@Valid PostCommentForm postCommentForm, BindingResult bindingResult,
                                @PathVariable("id") Long id, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "postcomment_form";
+            return "Post/postcomment_form";
         }
         PostComment postComment = this.postCommentService.getComment(id);
         if (!postComment.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.postCommentService.modify(postComment, postCommentForm.getContent());
-        return String.format("redirect:/post/detail/%s", postComment.getPost().getId());
+        return String.format("Post/redirect:/post/detail/%s", postComment.getPost().getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -82,7 +82,7 @@ public class PostCommentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
         this.postCommentService.delete(postComment);
-        return String.format("redirect:/post/detail/%s", postComment.getPost().getId());
+        return String.format("Post/redirect:/post/detail/%s", postComment.getPost().getId());
     }
 }
 

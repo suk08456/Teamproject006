@@ -14,23 +14,24 @@ import java.util.List;
 @Setter
 public class Post {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(nullable = false ,length = 30)
-  private String title;
+    @Column(nullable = false, length = 30)
+    private String title;
 
-  @Column(nullable = false, columnDefinition = "TEXT")
-  private String content;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
 
-  private LocalDateTime localDateTime;
+    private LocalDateTime localDateTime;
 
-  @ManyToOne
-  private Member author;
+    @ManyToOne
+    private Member author;
 
-  @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-  private List<PostComment> postCommentList;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<PostComment> postCommentList;
 
-  private LocalDateTime modifyDate;
+    private LocalDateTime modifyDate;
+
 }
